@@ -113,7 +113,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:1.1rem
 .pasos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
 .paso-card{background:#fff;border:1px solid var(--borde);border-radius:18px;padding:2rem;position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s}
 .paso-card:hover{border-color:var(--verde);transform:translateY(-3px)}
-.paso-num{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;color:var(--superficie2);position:absolute;top:-0.5rem;right:1rem;line-height:1;user-select:none}
+.paso-num{font-family:'Syne',sans-serif;font-size:5rem;font-weight:800;color:var(--superficie2);position:absolute;top:-0.5rem;right:1rem;line-height:1;user-select:none}
 .paso-icon{width:44px;height:44px;background:var(--verde-light);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;font-size:1.3rem}
 .paso-titulo{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:600;color:var(--negro);margin-bottom:0.6rem}
 .paso-desc{font-size:0.875rem;color:var(--texto-muted);line-height:1.6}
@@ -258,7 +258,7 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
 
   .pasos-grid{grid-template-columns:1fr;gap:1rem}
   .paso-card{padding:1.4rem}
-  .paso-num{font-size:3rem}
+  .paso-num{font-size:3.5rem}
 
   .calc-wrap{padding:1.4rem}
   .calc-inner{grid-template-columns:1fr;gap:1.5rem}
@@ -631,9 +631,6 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
     <p>Mándanos tu factura y te decimos cuánto puedes ahorrar.<br>Si no encontramos ahorro, te lo decimos gratis y sin compromiso.</p>
     <div class="form-wrap">
       <div class="form-grid">
-        <input type="hidden" name="access_key" value="0dfe1e15-23e3-4721-a38e-3dd0888ab3f4">
-        <input type="hidden" name="subject" value="Nuevo lead — FactuMenos">
-        <input type="hidden" name="from_name" value="FactuMenos Web">
         <div class="form-grupo">
           <label>Nombre y apellido <span style="color:#ff4d00">*</span></label>
           <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre y apellido">
@@ -655,11 +652,12 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
             </select>
             <input type="tel" id="f-tel" name="telefono" placeholder="600 000 000" style="flex:1" oninput="this.value=this.value.replace(/[^0-9\s]/g,'')">
           </div>
-          <div id="error-tel" style="display:none;font-size:0.78rem;color:#cc4400;margin-top:0.3rem">Por favor, introduce tu teléfono.</div>
+          <div id="error-tel" style="display:none;font-size:0.78rem;color:#cc4400;margin-top:0.3rem">Por favor, introduce un teléfono válido (9 cifras).</div>
         </div>
         <div class="form-grupo">
           <label>Email</label>
           <input type="email" id="f-email" name="email" placeholder="tu@email.com">
+          <div id="error-email" style="display:none;font-size:0.78rem;color:#cc4400;margin-top:0.3rem">Por favor, introduce un email válido.</div>
         </div>
         <div class="form-grupo">
           <label>Factura mensual aprox.</label>
@@ -798,15 +796,22 @@ function archivoSeleccionado(input){
 async function enviarFormulario(e){
   e.preventDefault();
   const nombre=document.getElementById('f-nombre').value.trim();
-  const tel=document.getElementById('f-tel').value.trim();
+  const tel=document.getElementById('f-tel').value.trim().replace(/\s/g,'');
+  const email=document.getElementById('f-email').value.trim();
   const errNombre=document.getElementById('error-nombre');
   const errTel=document.getElementById('error-tel');
+  const errEmail=document.getElementById('error-email');
   const errP=document.getElementById('error-privacidad');
 
   if(!nombre){errNombre.style.display='block';errNombre.scrollIntoView({behavior:'smooth',block:'center'});return;}
   errNombre.style.display='none';
-  if(!tel){errTel.style.display='block';errTel.scrollIntoView({behavior:'smooth',block:'center'});return;}
+
+  if(!tel||!/^[0-9]{9}$/.test(tel)){errTel.style.display='block';errTel.scrollIntoView({behavior:'smooth',block:'center'});return;}
   errTel.style.display='none';
+
+  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEmail.style.display='block';errEmail.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  errEmail.style.display='none';
+
   if(!document.getElementById('f-privacidad').checked){errP.style.display='block';errP.scrollIntoView({behavior:'smooth',block:'center'});return;}
   errP.style.display='none';
 
@@ -815,9 +820,7 @@ async function enviarFormulario(e){
   btn.disabled=true;
 
   const formData=new FormData();
-  formData.append('access_key','0dfe1e15-23e3-4721-a38e-3dd0888ab3f4');
-  formData.append('subject','Nuevo lead — FactuMenos');
-  formData.append('from_name','FactuMenos Web');
+  formData.append('_subject','Nuevo lead — FactuMenos');
   formData.append('nombre',nombre);
   formData.append('prefijo',document.getElementById('f-prefijo').value);
   formData.append('telefono',tel);
@@ -827,9 +830,8 @@ async function enviarFormulario(e){
   if(archivo) formData.append('factura_archivo',archivo);
 
   try{
-    const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:formData});
-    const data=await res.json();
-    if(data.success){
+    const res=await fetch('https://formspree.io/f/mgojwwln',{method:'POST',body:formData,headers:{'Accept':'application/json'}});
+    if(res.ok){
       document.querySelector('.form-grid').style.display='none';
       document.querySelector('.form-nota').style.display='none';
       document.getElementById('form-exito').style.display='block';
