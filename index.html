@@ -630,16 +630,17 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
     <h2 class="section-titulo" style="color:#fff">Análisis gratuito<br>en menos de 24 horas.</h2>
     <p>Mándanos tu factura y te decimos cuánto puedes ahorrar.<br>Si no encontramos ahorro, te lo decimos gratis y sin compromiso.</p>
     <div class="form-wrap">
+      <form id="forminit-form">
       <div class="form-grid">
         <div class="form-grupo">
           <label>Nombre y apellido <span style="color:#ff4d00">*</span></label>
-          <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre y apellido">
+          <input type="text" id="f-nombre" name="fi-sender-fullName" placeholder="Tu nombre y apellido">
           <div id="error-nombre" style="display:none;font-size:0.78rem;color:#cc4400;margin-top:0.3rem">Por favor, introduce tu nombre.</div>
         </div>
         <div class="form-grupo">
           <label>Teléfono <span style="color:#ff4d00">*</span></label>
           <div style="display:flex;gap:0.5rem;align-items:stretch">
-            <select id="f-prefijo" name="prefijo" style="width:90px;min-width:90px;background:#162a1f;border:1px solid #1e3d2a;border-radius:10px;color:#e8f5ee;padding:0.75rem 0.5rem;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none">
+            <select id="f-prefijo" style="width:90px;min-width:90px;background:#162a1f;border:1px solid #1e3d2a;border-radius:10px;color:#e8f5ee;padding:0.75rem 0.5rem;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none">
               <option value="+34">🇪🇸 +34</option>
               <option value="+1">🇺🇸 +1</option>
               <option value="+44">🇬🇧 +44</option>
@@ -650,18 +651,19 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
               <option value="+52">🇲🇽 +52</option>
               <option value="+54">🇦🇷 +54</option>
             </select>
-            <input type="tel" id="f-tel" name="telefono" placeholder="600 000 000" style="flex:1" oninput="this.value=this.value.replace(/[^0-9\s]/g,'')">
+            <input type="tel" id="f-tel" placeholder="600 000 000" style="flex:1" oninput="this.value=this.value.replace(/[^0-9\s]/g,'')">
+            <input type="hidden" id="f-tel-completo" name="fi-sender-phone">
           </div>
           <div id="error-tel" style="display:none;font-size:0.78rem;color:#cc4400;margin-top:0.3rem">Por favor, introduce un teléfono válido (9 cifras).</div>
         </div>
         <div class="form-grupo">
           <label>Email</label>
-          <input type="email" id="f-email" name="email" placeholder="tu@email.com">
+          <input type="email" id="f-email" name="fi-sender-email" placeholder="tu@email.com">
           <div id="error-email" style="display:none;font-size:0.78rem;color:#cc4400;margin-top:0.3rem">Por favor, introduce un email válido.</div>
         </div>
         <div class="form-grupo">
           <label>Factura mensual aprox.</label>
-          <select id="f-factura" name="factura_mensual">
+          <select id="f-factura" name="fi-select-facturaMensual">
             <option value="">Selecciona...</option>
             <option>50 – 100 €/mes</option>
             <option>100 – 200 €/mes</option>
@@ -676,7 +678,7 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
             <div style="font-size:1.4rem;margin-bottom:0.4rem">📎</div>
             <div style="font-size:0.85rem;color:var(--texto-muted)" id="archivo-label">Toca para adjuntar · JPG, PNG o PDF</div>
           </div>
-          <input type="file" id="f-archivo" name="factura_archivo" accept="image/*,.pdf" style="display:none" onchange="archivoSeleccionado(this)">
+          <input type="file" id="f-archivo" name="fi-file-facturaArchivo" accept="image/*,.pdf" style="display:none" onchange="archivoSeleccionado(this)">
         </div>
         <div class="form-grupo full" style="flex-direction:row;align-items:flex-start;gap:0.75rem">
           <input type="checkbox" id="f-privacidad" style="width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--verde);cursor:pointer">
@@ -684,9 +686,10 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
         </div>
         <div id="error-privacidad" style="display:none;font-size:0.8rem;color:#cc4400;padding:0.4rem 0">Por favor, acepta las condiciones para continuar.</div>
         <div class="form-grupo full">
-          <button class="form-submit" onclick="enviarFormulario(event)">Quiero mi análisis gratuito →</button>
+          <button type="submit" class="form-submit">Quiero mi análisis gratuito →</button>
         </div>
       </div>
+      </form>
       <p class="form-nota">Sin compromiso · Respuesta en menos de 24 h</p>
       <div id="form-exito" style="display:none;text-align:center;padding:2rem 1rem">
         <div style="font-size:3rem;margin-bottom:1rem">✅</div>
@@ -711,6 +714,7 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
   <div class="footer-txt">© 2025 FactuMenos · Servicio de optimización de contratos de telecomunicaciones · Madrid, España</div>
 </footer>
 
+<script src="https://forminit.com/sdk/v1/forminit.js"></script>
 <script>
 function toggleMenu(){
   const menu=document.getElementById('mobile-menu');
@@ -793,10 +797,13 @@ function archivoSeleccionado(input){
   }
 }
 
-async function enviarFormulario(e){
+const forminit = new Forminit();
+
+document.getElementById('forminit-form').addEventListener('submit', async function(e){
   e.preventDefault();
   const nombre=document.getElementById('f-nombre').value.trim();
-  const tel=document.getElementById('f-tel').value.trim().replace(/\s/g,'');
+  const telDigits=document.getElementById('f-tel').value.trim().replace(/\s/g,'');
+  const prefijo=document.getElementById('f-prefijo').value;
   const email=document.getElementById('f-email').value.trim();
   const errNombre=document.getElementById('error-nombre');
   const errTel=document.getElementById('error-tel');
@@ -806,7 +813,7 @@ async function enviarFormulario(e){
   if(!nombre){errNombre.style.display='block';errNombre.scrollIntoView({behavior:'smooth',block:'center'});return;}
   errNombre.style.display='none';
 
-  if(!tel||!/^[0-9]{9}$/.test(tel)){errTel.style.display='block';errTel.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  if(!telDigits||!/^[0-9]{9}$/.test(telDigits)){errTel.style.display='block';errTel.scrollIntoView({behavior:'smooth',block:'center'});return;}
   errTel.style.display='none';
 
   if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEmail.style.display='block';errEmail.scrollIntoView({behavior:'smooth',block:'center'});return;}
@@ -815,37 +822,29 @@ async function enviarFormulario(e){
   if(!document.getElementById('f-privacidad').checked){errP.style.display='block';errP.scrollIntoView({behavior:'smooth',block:'center'});return;}
   errP.style.display='none';
 
+  // Formatear el teléfono en E.164 (ej. +34600000000)
+  document.getElementById('f-tel-completo').value = prefijo + telDigits;
+
   const btn=document.querySelector('.form-submit');
   btn.textContent='Enviando...';
   btn.disabled=true;
 
-  const formData=new FormData();
-  formData.append('_subject','Nuevo lead — FactuMenos');
-  formData.append('nombre',nombre);
-  formData.append('prefijo',document.getElementById('f-prefijo').value);
-  formData.append('telefono',tel);
-  formData.append('email',document.getElementById('f-email').value);
-  formData.append('factura_mensual',document.getElementById('f-factura').value);
-  const archivo=document.getElementById('f-archivo').files[0];
-  if(archivo) formData.append('factura_archivo',archivo);
+  const formData = new FormData(e.target);
 
-  try{
-    const res=await fetch('https://formspree.io/f/mgojwwln',{method:'POST',body:formData,headers:{'Accept':'application/json'}});
-    if(res.ok){
-      document.querySelector('.form-grid').style.display='none';
-      document.querySelector('.form-nota').style.display='none';
-      document.getElementById('form-exito').style.display='block';
-    } else {
-      btn.textContent='Quiero mi análisis gratuito →';
-      btn.disabled=false;
-      alert('Ha habido un error. Por favor inténtalo de nuevo.');
-    }
-  } catch(err){
+  const { data, error } = await forminit.submit('j2cq7qqus19', formData);
+
+  if(error){
+    console.error('Forminit error:', error);
     btn.textContent='Quiero mi análisis gratuito →';
     btn.disabled=false;
-    alert('Ha habido un error de conexión. Por favor inténtalo de nuevo.');
+    alert(error.message || 'Ha habido un error. Por favor inténtalo de nuevo.');
+    return;
   }
-}
+
+  document.querySelector('.form-grid').style.display='none';
+  document.querySelector('.form-nota').style.display='none';
+  document.getElementById('form-exito').style.display='block';
+});
 </script>
 </body>
 </html>
