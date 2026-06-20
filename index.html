@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <meta name="theme-color" content="#00c47d">
-<meta name="description" content="FactuMenos — Reducimos tu factura de teléfono a la mitad. Análisis gratuito en 24h. Solo cobramos si ahorramos.">
-<title>FactuMenos — Reduce tu factura de teléfono a la mitad</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300c47d'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-weight='800' font-size='44' fill='%230c110e' text-anchor='middle'%3EFM%3C/text%3E%3C/svg%3E">
+<meta name="description" content="FactuMenos — Reducimos tu factura de móvil, fibra y TV a la mitad. Análisis gratuito en 24h. Solo cobramos si ahorramos.">
+<title>FactuMenos — Reduce tu factura de móvil, fibra y TV a la mitad</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -685,6 +686,7 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
           <label for="f-privacidad" style="font-size:0.82rem;color:#7aaa8e;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer;line-height:1.5">He leído y acepto las <a href="privacidad.html" target="_blank" style="color:var(--verde);text-decoration:underline">condiciones</a>.</label>
         </div>
         <div id="error-privacidad" style="display:none;font-size:0.8rem;color:#cc4400;padding:0.4rem 0">Por favor, acepta las condiciones para continuar.</div>
+        <div id="error-envio" style="display:none;font-size:0.8rem;color:#cc4400;padding:0.4rem 0;text-align:center"></div>
         <div class="form-grupo full">
           <button type="submit" class="form-submit">Quiero mi análisis gratuito →</button>
         </div>
@@ -837,9 +839,14 @@ document.getElementById('forminit-form').addEventListener('submit', async functi
     console.error('Forminit error:', error);
     btn.textContent='Quiero mi análisis gratuito →';
     btn.disabled=false;
-    alert(error.message || 'Ha habido un error. Por favor inténtalo de nuevo.');
+    const errEnvio=document.getElementById('error-envio');
+    errEnvio.textContent=error.message || 'Ha habido un error. Por favor inténtalo de nuevo.';
+    errEnvio.style.display='block';
+    errEnvio.scrollIntoView({behavior:'smooth',block:'center'});
     return;
   }
+
+  document.getElementById('error-envio').style.display='none';
 
   document.querySelector('.form-grid').style.display='none';
   document.querySelector('.form-nota').style.display='none';
