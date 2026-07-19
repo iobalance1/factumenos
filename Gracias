@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#00c47d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300c47d'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-weight='800' font-size='44' fill='%230c110e' text-anchor='middle'%3EFM%3C/text%3E%3C/svg%3E">
+<title>¡Gracias! — FactuMenos</title>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R8BXRZ4YPB"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-R8BXRZ4YPB');
+// Evento de conversión — se dispara al llegar a esta página
+gtag('event', 'generate_lead', {
+  'event_category': 'formulario',
+  'event_label': 'analisis_gratuito'
+});
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--verde:#00c47d;--verde-dark:#009960;--verde-light:#e0f7ef;--blanco:#f8faf8;--negro:#0c110e;--texto:#1a2e22;--texto-muted:#5a7a66;--borde:#d0e8da}
+body{font-family:'Inter',sans-serif;background:var(--blanco);color:var(--texto);min-height:100vh;display:flex;flex-direction:column}
+nav{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 5%;border-bottom:1px solid var(--borde)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-0.03em;color:var(--negro);text-decoration:none}
+.logo span{color:var(--verde)}
+.contenido{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem 5%}
+.card{text-align:center;max-width:480px}
+.check{width:80px;height:80px;background:var(--verde-light);border:2px solid var(--verde);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-size:2.5rem}
+h1{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-0.03em;color:var(--negro);margin-bottom:1rem;line-height:1.15}
+p{color:var(--texto-muted);line-height:1.7;font-weight:300;margin-bottom:2rem}
+p strong{color:var(--texto);font-weight:500}
+.btn{display:inline-block;background:var(--verde);color:#fff;padding:0.9rem 2rem;border-radius:100px;font-size:0.95rem;font-weight:500;text-decoration:none;transition:background 0.2s}
+.btn:hover{background:var(--verde-dark)}
+.wa-nota{margin-top:2rem;font-size:0.85rem;color:var(--texto-muted)}
+.wa-nota a{color:var(--verde);text-decoration:underline}
+footer{border-top:1px solid var(--borde);padding:1.5rem 5%;text-align:center;font-size:0.75rem;color:var(--texto-muted)}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">Factu<span>Menos</span></a>
+</nav>
+<div class="contenido">
+  <div class="card">
+    <div class="check">✓</div>
+    <h1>¡Información enviada con éxito!</h1>
+    <p>Hemos recibido tu solicitud correctamente. <strong>Nos pondremos en contacto contigo en las próximas 24 horas</strong> con el resultado de tu análisis.</p>
+    <a href="/" class="btn">Volver a inicio</a>
+    <p class="wa-nota">¿Tienes alguna duda mientras tanto? <a href="https://wa.me/34660309778?text=Hola%2C%20acabo%20de%20enviar%20mi%20solicitud%20y%20tengo%20una%20duda" target="_blank">Escríbenos por WhatsApp</a></p>
+  </div>
+</div>
+<footer>© 2025 FactuMenos SL · Optimización de facturas de telecomunicaciones</footer>
+</body>
+</html>
