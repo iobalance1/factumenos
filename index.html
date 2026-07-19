@@ -7,7 +7,25 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300c47d'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-weight='800' font-size='44' fill='%230c110e' text-anchor='middle'%3EFM%3C/text%3E%3C/svg%3E">
 <meta name="description" content="FactuMenos — Reducimos tu factura de móvil, fibra y TV a la mitad. Análisis gratuito en 24h. Solo cobramos si ahorramos.">
 <title>FactuMenos — Reduce tu factura de móvil, fibra y TV a la mitad</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R8BXRZ4YPB"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-R8BXRZ4YPB');
+</script>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R8BXRZ4YPB"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-R8BXRZ4YPB');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -644,18 +662,8 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
         <div class="form-grupo">
           <label>Teléfono <span style="color:#ff4d00">*</span></label>
           <div style="display:flex;gap:0.5rem;align-items:stretch">
-            <select id="f-prefijo" style="width:90px;min-width:90px;background:#162a1f;border:1px solid #1e3d2a;border-radius:10px;color:#e8f5ee;padding:0.75rem 0.5rem;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none">
-              <option value="+34">🇪🇸 +34</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+44">🇬🇧 +44</option>
-              <option value="+33">🇫🇷 +33</option>
-              <option value="+49">🇩🇪 +49</option>
-              <option value="+39">🇮🇹 +39</option>
-              <option value="+351">🇵🇹 +351</option>
-              <option value="+52">🇲🇽 +52</option>
-              <option value="+54">🇦🇷 +54</option>
-            </select>
-            <input type="tel" id="f-tel" placeholder="600 000 000" style="flex:1" oninput="this.value=this.value.replace(/[^0-9\s]/g,'')">
+            <div style="display:flex;align-items:center;background:#162a1f;border:1px solid #1e3d2a;border-radius:10px;color:#e8f5ee;padding:0.75rem 0.9rem;font-family:'Inter',sans-serif;font-size:0.9rem;white-space:nowrap">🇪🇸 +34</div>
+            <input type="tel" id="f-tel" placeholder="600 000 000" style="flex:1" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9\s]/g,'')">
             <input type="hidden" id="f-tel-completo" name="fi-sender-phone">
           </div>
           <div id="error-tel" style="display:none;font-size:0.78rem;color:#cc4400;margin-top:0.3rem">Por favor, introduce un teléfono válido (9 cifras).</div>
@@ -808,7 +816,6 @@ document.getElementById('forminit-form').addEventListener('submit', async functi
   e.preventDefault();
   const nombre=document.getElementById('f-nombre').value.trim();
   const telDigits=document.getElementById('f-tel').value.trim().replace(/\s/g,'');
-  const prefijo=document.getElementById('f-prefijo').value;
   const email=document.getElementById('f-email').value.trim();
   const errNombre=document.getElementById('error-nombre');
   const errTel=document.getElementById('error-tel');
@@ -828,7 +835,7 @@ document.getElementById('forminit-form').addEventListener('submit', async functi
   errP.style.display='none';
 
   // Formatear el teléfono en E.164 (ej. +34600000000)
-  document.getElementById('f-tel-completo').value = prefijo + telDigits;
+  document.getElementById('f-tel-completo').value = '+34' + telDigits;
 
   const btn=document.querySelector('.form-submit');
   btn.textContent='Enviando...';
@@ -851,9 +858,8 @@ document.getElementById('forminit-form').addEventListener('submit', async functi
 
   document.getElementById('error-envio').style.display='none';
 
-  document.querySelector('.form-grid').style.display='none';
-  document.querySelector('.form-nota').style.display='none';
-  document.getElementById('form-exito').style.display='block';
+  // Redirigir a la página de gracias (dispara la conversión de GA4/Ads)
+  window.location.href='/gracias.html';
 });
 </script>
 </body>
