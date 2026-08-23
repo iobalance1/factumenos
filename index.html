@@ -400,6 +400,80 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
   }
 }
 </script>
+<style>
+@keyframes bounceArrow{
+  0%{transform:translateY(0);opacity:0.6}
+  50%{transform:translateY(-4px);opacity:1}
+  100%{transform:translateY(0);opacity:0.6}
+}
+
+.kpi-section-container {
+  background: linear-gradient(135deg, #f0f7f3 0%, #e0f7ef 100%);
+  padding: 60px 40px;
+  border-radius: 20px;
+  margin-bottom: 0;
+}
+
+.kpi-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .kpi-section-container {
+    padding: 40px 24px;
+  }
+  
+  .kpi-grid-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .kpi-card {
+    padding: 32px 20px !important;
+  }
+  
+  .kpi-value-numero {
+    font-size: 48px !important;
+  }
+  
+  .kpi-value-sufijo {
+    font-size: 32px !important;
+  }
+  
+  .kpi-card-label {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-section-container {
+    padding: 32px 16px;
+  }
+  
+  .kpi-grid-container {
+    gap: 16px;
+  }
+  
+  .kpi-card {
+    padding: 24px 16px !important;
+  }
+  
+  .kpi-value-numero {
+    font-size: 42px !important;
+  }
+  
+  .kpi-value-sufijo {
+    font-size: 28px !important;
+  }
+  
+  .kpi-titulo {
+    font-size: 22px !important;
+  }
+}
+</style>
 </head>
 <body>
 
