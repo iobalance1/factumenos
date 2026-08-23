@@ -607,7 +607,95 @@ footer{border-top:1px solid var(--borde);padding:2rem 5%;display:flex;justify-co
 <hr class="section-divider">
 
 <div class="section">
-  <div class="section-tag">Clientes</div>
+  <hr class="section-divider">
+
+<!-- SECCIÓN: KPI DINÁMICO -->
+<div class="section">
+  <div style="background:linear-gradient(135deg,#f0f7f3 0%,#e0f7ef 100%);padding:60px 40px;border-radius:20px">
+    <div style="text-align:center;margin-bottom:40px">
+      <span class="section-tag" style="display:block">Impacto real</span>
+      <h2 class="section-titulo" style="margin-top:12px">Lo que estamos logrando juntos</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center">
+      <!-- KPI 1: Ahorrados -->
+      <div style="text-align:center;background:#fff;border-radius:16px;padding:40px;box-shadow:0 8px 32px rgba(11,61,46,0.08);border:2px solid #d0e8da">
+        <div style="font-size:14px;color:#5a7a66;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;font-weight:500">Ahorrados por nuestros clientes</div>
+        
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px">
+          <div style="font-size:20px;font-weight:600;color:#00c47d;animation:bounceArrow 2s ease-in-out infinite">↑</div>
+          <div style="display:flex;align-items:baseline;gap:4px">
+            <div style="font-family:'Syne',sans-serif;font-size:64px;font-weight:800;line-height:1;color:#00c47d" id="ahorroNumber">0</div>
+            <div style="font-family:'Syne',sans-serif;font-size:40px;font-weight:700;opacity:0.8;color:#00c47d">k€</div>
+          </div>
+        </div>
+        
+        <div style="font-size:12px;color:#5a7a66;margin-top:16px">en ahorro acumulado</div>
+      </div>
+
+      <!-- KPI 2: Clientes -->
+      <div style="text-align:center;background:#fff;border-radius:16px;padding:40px;box-shadow:0 8px 32px rgba(11,61,46,0.08);border:2px solid #d0e8da">
+        <div style="font-size:14px;color:#5a7a66;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;font-weight:500">Clientes ahorrando</div>
+        
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px">
+          <div style="font-size:20px;font-weight:600;color:#0c110e;animation:bounceArrow 2s ease-in-out infinite;animation-delay:0.3s">↑</div>
+          <div style="display:flex;align-items:baseline;gap:4px">
+            <div style="font-family:'Syne',sans-serif;font-size:64px;font-weight:800;line-height:1;color:#0c110e" id="clientNumber">0</div>
+            <div style="font-family:'Syne',sans-serif;font-size:40px;font-weight:700;opacity:0.6;color:#0c110e">+</div>
+          </div>
+        </div>
+        
+        <div style="font-size:12px;color:#5a7a66;margin-top:16px">clientes activos</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes bounceArrow{
+  0%{transform:translateY(0);opacity:0.6}
+  50%{transform:translateY(-4px);opacity:1}
+  100%{transform:translateY(0);opacity:0.6}
+}
+</style>
+
+<script>
+function animateKPI(elementId, targetNumber, duration = 2000, delay = 0) {
+  const element = document.getElementById(elementId);
+  
+  setTimeout(() => {
+    const startTime = Date.now();
+    
+    function update() {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const easeProgress = progress < 0.5 
+        ? 2 * progress * progress 
+        : -1 + (4 - 2 * progress) * progress;
+      
+      const current = Math.floor(targetNumber * easeProgress);
+      element.textContent = current;
+      
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        element.textContent = targetNumber;
+      }
+    }
+    
+    requestAnimationFrame(update);
+  }, delay);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  animateKPI('ahorroNumber', 351, 2000, 500);
+  animateKPI('clientNumber', 521, 2000, 800);
+});
+</script>
+
+
+<div class="section-tag">Clientes</div>
   <h2 class="section-titulo">Lo que dicen quienes ya ahorran.</h2>
   <div class="test-grid">
     <div class="testimonio">
